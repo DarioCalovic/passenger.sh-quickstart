@@ -318,7 +318,7 @@ To retrieve all sessions, run the following command:
 
 ```bash
 curl --silent --request GET \
---url https://read.passenger.sh/session \
+--url https://read.example.com/session \
 --header "authorization: Basic $READ_AUTH_TOKEN" \
 | jq
 ```
