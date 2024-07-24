@@ -232,7 +232,16 @@ To add a user, you first need to create a credential:
     }'
     ```
 
-2. Add the user by referencing the created credential:
+2. To verify your newly created credential, run the following command:
+
+    ```bash
+    curl --silent --request GET \
+    --url https://read.example.com/credential?identifier=root/users/tony \
+    --header "authorization: Basic $READ_AUTH_TOKEN" \
+    | jq
+    ```
+
+3. Add the user by referencing the created credential:
 
     ```bash
     curl --request PUT \
@@ -247,6 +256,16 @@ To add a user, you first need to create a credential:
         ]
     }'
     ```
+
+4. To verify your newly created user, run the following command:
+
+    ```bash
+    curl --silent --request GET \
+    --url https://read.example.com/user?identifier=tony \
+    --header "authorization: Basic $READ_AUTH_TOKEN" \
+    | jq
+    ```
+
 
 ### Target Management
 
@@ -270,7 +289,16 @@ To add a target, follow these steps:
     }'
     ```
 
-2. Add the target with the appropriate details. Note that the address should be specified as `host:port` of the target machine. Additionally, ensure that `allowed_ips` includes your remote IP address in CIDR notation, e.g., `YOUR_IP/32`.
+2. To verify your newly created credential, run the following command:
+
+    ```bash
+    curl --silent --request GET \
+    --url https://read.example.com/credential?identifier=root/targets/eclipse/john \
+    --header "authorization: Basic $READ_AUTH_TOKEN" \
+    | jq
+    ```
+
+3. Add the target with the appropriate details. Note that the address should be specified as `host:port` of the target machine. Additionally, ensure that `allowed_ips` includes your remote IP address in CIDR notation, e.g., `YOUR_IP/32`.
 
     ```bash
     curl --request PUT \
@@ -292,6 +320,15 @@ To add a target, follow these steps:
             ]
         }
     }'
+    ```
+
+4. To verify your newly created target, run the following command:
+
+    ```bash
+    curl --silent --request GET \
+    --url https://read.example.com/target?identifier=eclipse \
+    --header "authorization: Basic $READ_AUTH_TOKEN" \
+    | jq
     ```
 
 ## Login
