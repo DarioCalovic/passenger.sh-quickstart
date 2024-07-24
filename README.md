@@ -35,6 +35,7 @@ mkdir db
 Run `vi .env` and paste following content:
 
 ```bash
+SSH_FQDN=example.com
 WRITE_FQDN=write.example.com
 READ_FQDN=read.example.com
 POSTMASTER_EMAIL=your_email@example.com
@@ -42,7 +43,7 @@ EXPOSED_SSH_PORT=22
 ```
 
 > **_NOTE:_**
-> * **DNS Entries**: Make sure that you have configured DNS entries for `$WRITE_FQDN` and `$READ_FQDN` to point to the machine where you are installing the software. These entries are necessary for proper operation and accessibility.
+> * **DNS Entries**: Make sure that you have configured DNS entries for `$SSH_FQDN`, `$WRITE_FQDN` and `$READ_FQDN` to point to the machine where you are installing the software. These entries are necessary for proper operation and accessibility.
 > * **POSTMASTER_EMAIL**: The email address specified in `POSTMASTER_EMAIL` must be valid and correctly configured. This email is used by Traefik to issue Let's Encrypt certificates.
 
 Run `vi config/passenger.yml` and paste following content:
@@ -343,7 +344,7 @@ To add a target, follow these steps:
 
 You have set up your user and target with the necessary credentials. You are now ready to log in to your target via the configured Passenger proxy.
 
-1. Run the following command to initiate the SSH session (replace eclipse@example.com with your target's details):
+1. Run the following command to initiate the SSH session (`example.com` with your passenger's ssh endpoint `SSH_FQDN`):
 
     ```bash
     ssh tony@eclipse@example.com
