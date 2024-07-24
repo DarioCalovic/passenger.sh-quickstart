@@ -42,7 +42,7 @@ EXPOSED_SSH_PORT=22
 ```
 
 > **_NOTE:_**
-> * **DNS Entries**: Make sure that you have configured DNS entries for `write.example.com` and `read.example.com` to point to the machine where you are installing the software. These entries are necessary for proper operation and accessibility.
+> * **DNS Entries**: Make sure that you have configured DNS entries for `$WRITE_FQDN` and `$READ_FQDN` to point to the machine where you are installing the software. These entries are necessary for proper operation and accessibility.
 > * **POSTMASTER_EMAIL**: The email address specified in `POSTMASTER_EMAIL` must be valid and correctly configured. This email is used by Traefik to issue Let's Encrypt certificates.
 
 Run `vi config/passenger.yml` and paste following content:
@@ -207,6 +207,14 @@ You should find two entries under `root/server`:
   ```bash
   export READ_AUTH_TOKEN=$(echo -n 'username:password' | base64 -w 0)
   ``` 
+4. Set the environment variables for the Fully Qualified Domain Names (FQDNs) of your endpoints:
+
+  ```bash
+  export WRITE_FQDN="write.example.com"
+  export READ_FQDN="read.example.com"
+  ``` 
+
+
 
 Now you can use Passenger in your console session with a web client like `curl`.
 
@@ -220,7 +228,7 @@ To add a user, you first need to create a credential:
 
     ```bash
     curl --request PUT \
-    --url https://write.example.com/credential \
+    --url https://$WRITE_FQDN/credential \
     --header "authorization: Basic $WRITE_AUTH_TOKEN" \
     --data '{
         "identifier": "root/users/tony",
@@ -236,7 +244,7 @@ To add a user, you first need to create a credential:
 
     ```bash
     curl --silent --request GET \
-    --url https://read.example.com/credential?identifier=root/users/tony \
+    --url https://$READ_FQDN/credential?identifier=root/users/tony \
     --header "authorization: Basic $READ_AUTH_TOKEN" \
     | jq
     ```
@@ -245,7 +253,7 @@ To add a user, you first need to create a credential:
 
     ```bash
     curl --request PUT \
-    --url https://write.example.com/user \
+    --url https://$WRITE_FQDN/user \
     --header "authorization: Basic $WRITE_AUTH_TOKEN" \
     --data '{
         "identifier": "tony",
@@ -261,7 +269,7 @@ To add a user, you first need to create a credential:
 
     ```bash
     curl --silent --request GET \
-    --url https://read.example.com/user?identifier=tony \
+    --url https://$READ_FQDN/user?identifier=tony \
     --header "authorization: Basic $READ_AUTH_TOKEN" \
     | jq
     ```
@@ -277,7 +285,7 @@ To add a target, follow these steps:
 
     ```bash
     curl --request PUT \
-    --url https://write.example.com/credential \
+    --url https://$WRITE_FQDN/credential \
     --header "authorization: Basic $WRITE_AUTH_TOKEN" \
     --data '{
         "identifier": "root/targets/eclipse/john",
@@ -293,7 +301,7 @@ To add a target, follow these steps:
 
     ```bash
     curl --silent --request GET \
-    --url https://read.example.com/credential?identifier=root/targets/eclipse/john \
+    --url https://$READ_FQDN/credential?identifier=root/targets/eclipse/john \
     --header "authorization: Basic $READ_AUTH_TOKEN" \
     | jq
     ```
@@ -302,7 +310,7 @@ To add a target, follow these steps:
 
     ```bash
     curl --request PUT \
-    --url https://write.example.com/target \
+    --url https://$WRITE_FQDN/target \
     --header "authorization: Basic $WRITE_AUTH_TOKEN" \
     --data '{
         "identifier": "eclipse",
@@ -326,7 +334,7 @@ To add a target, follow these steps:
 
     ```bash
     curl --silent --request GET \
-    --url https://read.example.com/target?identifier=eclipse \
+    --url https://$READ_FQDN/target?identifier=eclipse \
     --header "authorization: Basic $READ_AUTH_TOKEN" \
     | jq
     ```
@@ -355,7 +363,7 @@ To retrieve all sessions, run the following command:
 
 ```bash
 curl --silent --request GET \
---url https://read.example.com/session \
+--url https://$READ_FQDN/session \
 --header "authorization: Basic $READ_AUTH_TOKEN" \
 | jq
 ```
